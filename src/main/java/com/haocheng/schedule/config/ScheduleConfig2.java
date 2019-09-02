@@ -1,34 +1,47 @@
 package com.haocheng.schedule.config;
 
-
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.AsyncConfigurer;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableAsync;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import java.lang.reflect.Method;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
 
 /**
- * 并行执行定时任务
- *
- * 方式二：自定义异步调用线程池
+ * 方式二：Bean注解的TaskScheduler或TaskExecutor即可
  *
  * @Author: haocheng
- * @Date: 2019-08-27 17:31
+ * @Date: 2019-08-27 17:58
  */
-@Slf4j
 @EnableAsync
-@EnableScheduling
 @Configuration
-public class ScheduleConfig2 implements AsyncConfigurer {
+public class ScheduleConfig2 {
 
-    @Override
-    public Executor getAsyncExecutor() {
+    @Bean
+    public TaskScheduler taskScheduler(){
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        // 配置线程池大小，根据任务数量定制
+        scheduler.setPoolSize(10);
+        // 线程名称前缀
+        scheduler.setThreadNamePrefix("spring-scheduler-thread-");
+        // 线程池关闭前最大等待时间，确保最后一定关闭
+        scheduler.setAwaitTerminationSeconds(60);
+        // 线程池关闭时等待所有任务完成
+        scheduler.setWaitForTasksToCompleteOnShutdown(true);
+        // 任务丢弃策略
+        scheduler.setRejectedExecutionHandler(new ThreadPoolExecutor.AbortPolicy());
+        //初始化
+        scheduler.initialize();
+
+        return scheduler;
+    }
+
+
+    @Bean
+    public TaskExecutor taskExecutor(){
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         // 配置核心线程数
         executor.setCorePoolSize(20);
@@ -53,23 +66,5 @@ public class ScheduleConfig2 implements AsyncConfigurer {
         // 初始化
         executor.initialize();
         return executor;
-    }
-
-    /**
-     * 处理异步方法的异常
-     *
-     * @return
-     */
-    @Override
-    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
-        return new SpringAsyncExceptionHandler();
-    }
-
-    class SpringAsyncExceptionHandler implements AsyncUncaughtExceptionHandler {
-
-        @Override
-        public void handleUncaughtException(Throwable throwable, Method method, Object... objects) {
-            log.error("Exception occurs in async method", throwable);
-        }
     }
 }

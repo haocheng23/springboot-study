@@ -17,17 +17,17 @@ import java.util.Date;
 @Component
 public class ParallelTimeTask {
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Scheduled(cron = "0/1 * * * * ?")
     public void taskAAA() throws InterruptedException {
-        System.out.println(Thread.currentThread().getName() + " | taskAAA " + sdf.format(new Date()));
+        System.out.println(Thread.currentThread().getName() + " | taskAAA " + SDF.format(new Date()));
 //        Thread.sleep(4000);
     }
 
     @Async
     @Scheduled(cron = "0/2 * * * * ?")
     public void taskBBB() {
-        System.out.println(Thread.currentThread().getName() + " | taskBBB " + sdf.format(new Date()));
+        System.out.println(Thread.currentThread().getName() + " | taskBBB " + SDF.format(new Date()));
     }
 }
