@@ -1,10 +1,21 @@
 package com.haocheng.study.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+/**
+ * @Author: haocheng
+ * @Date: 2019-10-12 15:36
+ */
+@ApiModel(value = "部门")
 public class Dept {
+    @ApiModelProperty(value = "编号")
     private Integer id;
 
+    @ApiModelProperty(value = "名称")
     private String name;
 
+    @ApiModelProperty(value = "负责人编号")
     private String leader;
 
     public Integer getId() {
