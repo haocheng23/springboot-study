@@ -1,4 +1,4 @@
-package com.haocheng.schedule.config;
+package com.haocheng.study.util.schedule.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,4 +1,4 @@
-package com.haocheng.schedule;
+package com.haocheng.study.util.schedule;
 
 
 import lombok.extern.slf4j.Slf4j;
