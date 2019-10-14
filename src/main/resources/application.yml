@@ -1,0 +1,21 @@
+spring:
+  datasource:
+      type: com.alibaba.druid.pool.DruidDataSource
+      url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC
+      username: root
+      password: 123456
+      # 监控统计拦截的filters 有stat,wall,log4j
+      filters: stat
+
+#mybatis:
+#  mapper-locations=classpath:mapper/*.xml
+server:
+  port: 7777
+logging:
+  level:
+    com.haocheng: debug
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
