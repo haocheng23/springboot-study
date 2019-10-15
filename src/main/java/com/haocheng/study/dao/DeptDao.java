@@ -13,9 +13,8 @@ public class DeptDao {
     @Resource
     private DeptMapper mapper;
 
-    public Dept getDept(DeptExample example){
-        List<Dept> depts = mapper.selectByExample(example);
-        return depts.get(0);
+    public List<Dept> getDept(DeptExample example){
+        return mapper.selectByExample(example);
     }
 
     public List<Dept> get4Page() {

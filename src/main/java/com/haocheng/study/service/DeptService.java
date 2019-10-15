@@ -20,9 +20,9 @@ public class DeptService {
     private DeptDao deptDao;
 
 
-    public Dept getDept(){
+    public List<Dept> getDept(){
         DeptExample example = new DeptExample();
-        example.createCriteria().andLeaderEqualTo("1006");
+        example.createCriteria();
         return deptDao.getDept(example);
     }
 
