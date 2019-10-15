@@ -1,7 +1,7 @@
 server:
   port: 7777
 
-#使用默认配置
+#默认配置
 #spring:
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=UTC&useSSL=false
@@ -16,7 +16,7 @@ spring:
     username: root
     password: 123456
     druid:
-      filters: stat,wall,config
+      filters: stat,wall
       # 连接池的配置信息
       initial-size: 1
       min-idle: 1
