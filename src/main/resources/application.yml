@@ -9,6 +9,7 @@ server:
 #    password: 123456
 
 spring:
+  ################################   数据源配置   ################################
   datasource:
     name: druidDataSource
     type: com.alibaba.druid.pool.DruidDataSource
@@ -46,6 +47,21 @@ spring:
         login-password: 123456
       ########### 监控配置  1.1.10+
 
+  ################################   缓存配置   ################################
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password:
+    database: 0
+    # lettuce配置
+    lettuce:
+      pool:
+        # 最大活跃链接数 默认8
+        max-active: 5
+        # 最大空闲连接数 默认8
+        max-idle: 10
+        # 最小空闲连接数 默认0
+        min-idle: 0
 logging:
   level:
     com.haocheng: debug

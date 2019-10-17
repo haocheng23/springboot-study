@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * @Author: haocheng
+ * @Date: 2019-10-17 16:25
+ */
 @Api(tags = "部门控制")
 @RestController
 public class DeptController {

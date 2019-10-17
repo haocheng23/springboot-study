@@ -4,6 +4,7 @@ import com.haocheng.study.dao.DeptDao;
 import com.haocheng.study.model.Dept;
 import com.haocheng.study.model.DeptExample;
 import com.haocheng.study.util.paging.PageRequest;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,6 +21,7 @@ public class DeptService {
     private DeptDao deptDao;
 
 
+    @Cacheable(value = "cache2", key = "'dept'", unless="#result == null")
     public List<Dept> getDept(){
         DeptExample example = new DeptExample();
         example.createCriteria();
