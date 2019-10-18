@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,20 +39,24 @@ public class RedisConfig{
      */
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
+
+        //使用Fastjson2JsonRedisSerializer来序列化和反序列化
+        FastJson2JsonRedisSerializer fastJson2JsonRedisSerializer = new FastJson2JsonRedisSerializer(Object.class);
+
         RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(factory);
-        //使用StringRedisSerializer来序列化和反序列化redis的key值
+        //序列化和反序列化redis的key值
         template.setKeySerializer(new StringRedisSerializer());
         template.setHashKeySerializer(new StringRedisSerializer());
-        //使用jackson2JsonRedisSerializer来序列化和反序列化redis的value值
-        template.setValueSerializer(jackson2JsonRedisSerializer());
-        template.setHashValueSerializer(jackson2JsonRedisSerializer());
+        //序列化和反序列化redis的value值
+        template.setValueSerializer(fastJson2JsonRedisSerializer);
+        template.setHashValueSerializer(fastJson2JsonRedisSerializer);
         template.afterPropertiesSet();
         return template;
     }
 
     /**
-     * json序列化
+     * jackson实现json序列化
      * @return
      */
     @Bean
@@ -76,6 +79,10 @@ public class RedisConfig{
      */
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
+
+        //使用Fastjson2JsonRedisSerializer来序列化和反序列化redis的value值
+        FastJson2JsonRedisSerializer fastJson2JsonRedisSerializer = new FastJson2JsonRedisSerializer(Object.class);
+
         // 生成一个默认配置，通过config对象即可对缓存进行自定义配置
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig();
         // 设置缓存的默认过期时间，也是使用Duration设置
@@ -83,7 +90,7 @@ public class RedisConfig{
                 // 设置 key为string序列化
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 // 设置value为json序列化
-                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer()))
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(fastJson2JsonRedisSerializer))
                 // 不缓存空值
                 .disableCachingNullValues();
 
