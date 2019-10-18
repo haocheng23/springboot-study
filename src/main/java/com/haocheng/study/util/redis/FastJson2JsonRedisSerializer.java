@@ -37,7 +37,7 @@ public class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
         if (null == t) {
             return new byte[0];
         }
-        return JSON.toJSONString(t, SerializerFeature.WriteClassName).getBytes(DEFAULT_CHARSET);
+        return JSON.toJSONString(t).getBytes(DEFAULT_CHARSET);
     }
 
     @Override
